@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "axios": "^1.12.2",
+    "cheerio": "^1.1.2",
+    "jsdom": "^27.0.1",
+    "node-fetch": "^3.3.2"
+  },
+  "name": "09-nasa-space-explorer-v2",
+  "description": "NASA publishes an [**Astronomy Picture of the Day (APOD)**](https://apod.nasa.gov/apod/archivepixFull.html)—images and videos with short explanations about our universe.",
+  "version": "1.0.0",
+  "main": "build_data_from_html.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

@@ -1,30 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NASA Space Explorer</title>
-  <link href="style.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Minimal additions for video badge / play overlay / pager -->
+  <style>
+    .card-media { position: relative; }
+    .badge-video{
+      position:absolute; right:8px; bottom:8px;
+      padding:4px 6px; font-size:12px; border-radius:6px;
+      background:rgba(0,0,0,.6); color:#fff; border:1px solid rgba(255,255,255,.25);
+      pointer-events:none;
+    }
+    .play-overlay{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(transparent, rgba(0,0,0,.25));
+      pointer-events:none;
+    }
+    .play-overlay svg{ width:44px; height:44px; filter:drop-shadow(0 2px 6px rgba(0,0,0,.5)); }
+    .pager{ display:flex; gap:10px; justify-content:center; align-items:center; padding:16px; }
+    .pager button{ padding:8px 12px; border-radius:8px; border:1px solid #25304d; background:#0f1a33; color:#e6eefc; cursor:pointer; }
+    .pager button:disabled{ opacity:.5; cursor:not-allowed; }
+    .empty{ opacity:.7; text-align:center; padding:36px 0; grid-column:1/-1; }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <header class="site-header">
-      <img src="img/nasa-worm-logo.png" alt="NASA Logo" class="logo" />
-      <h1>Space Explorer</h1>
-    </header>
-
-    <div class="filters">
-      <button id="getImageBtn">Fetch Space Images</button>
+  <header class="site-header">
+    <div class="brand">
+      <img src="img/nasa-worm-logo.png" alt="NASA logo" class="brand-mark" />
+      <div class="brand-text">
+        <h1>NASA Space Explorer</h1>
+        <p class="tagline">Astronomy Picture of the Day — curated gallery</p>
+      </div>
     </div>
+    <nav class="actions">
+      <form id="controls" class="controls" autocomplete="off">
+        <label class="control">
+          <span>Start date</span>
+          <div class="date-wrap">
+            <input type="date" id="startDate" required />
+          </div>
+        </label>
 
-    <div id="gallery" class="gallery">
-      <div class="placeholder">
-        <div class="placeholder-icon">🔭</div>
-        <p>Click "Fetch Space Images" to explore the cosmos!</p>
+        <label class="control">
+          <span>Days</span>
+          <select id="days">
+            <option value="9" selected>9</option>
+            <option value="6">6</option>
+            <option value="3">3</option>
+          </select>
+        </label>
+
+        <button id="fetchBtn" class="btn primary" type="submit">
+          Get Space Images
+        </button>
+
+        <!-- Reset Date button -->
+        <button id="resetDate" class="btn" type="button" aria-label="Reset start date">
+          Reset Date
+        </button>
+      </form>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section id="fact" class="fact" aria-live="polite"></section>
+    <div id="loading" class="loading" hidden>🔄 Loading space photos…</div>
+    <section id="gallery" class="gallery" aria-live="polite"></section>
+
+    <div id="pager" class="pager">
+      <button id="prev" type="button" aria-label="Previous page">◀ Prev</button>
+      <span id="pageLabel">Page 1</span>
+      <button id="next" type="button" aria-label="Next page">Next ▶</button>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog" role="document">
+      <button class="modal-close" aria-label="Close" data-close-modal>&times;</button>
+      <!-- NEW fullscreen button -->
+      <button class="modal-fullscreen" id="modalFs" aria-label="View fullscreen">⤢ Fullscreen</button>
+
+      <figure id="modalMedia" class="modal-media"></figure>
+      <div class="modal-meta">
+        <h2 id="modalTitle"></h2>
+        <p id="modalDate" class="subtle"></p>
+        <p id="modalExplanation"></p>
+        <p id="modalCredit" class="subtle"></p>
       </div>
     </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <footer class="site-footer">
+    <img src="img/NASA-Logo-Large.jpg" alt="NASA insignia" class="footer-mark" />
+    <p>
+      Data source: mirrored APOD dataset.
+      Fallback index: APOD Archive (titles only)
+    </p>
+  </footer>
+
+  <script src="js/script.js" defer></script>
 </body>
 </html>
